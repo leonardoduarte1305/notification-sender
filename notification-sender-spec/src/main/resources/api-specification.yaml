@@ -1,0 +1,108 @@
+openapi: 3.0.2
+
+info:
+  version: "1.0.0"
+  title: notification-sender
+  description: |
+    Projeto destinado ao envio de distintos tipos de notificações e utilizado por diversos projetos.
+    Pode ser usado por API REST ou publicando mensagem em tópico Kafka
+  contact:
+    email: leonardoduarte1305@gmail.com
+
+tags:
+  - name: "Email"
+    description: "Descreve os endpoints para envio de emails"
+  - name: "SMS"
+    description: "Descreve os endpoints para envio de SMSs"
+
+servers:
+  - description: Personalizado
+    url: "{protocolo}://{host}:{porta}{raiz}"
+    variables:
+      protocolo:
+        default: http
+        enum:
+          - http
+          - https
+      host:
+        default: localhost
+        enum:
+          - localhost
+          - 127.0.0.1
+      porta:
+        default: '8080'
+        enum:
+          - '8080'
+          - '8081'
+      raiz:
+        default: /
+        enum:
+          - /
+          - /v1
+
+paths:
+  /enviarEmail:
+    post:
+      operationId: enviarEmailSemAnexo
+      summary: Envia um email sem anexo.
+      description: "Envia um email de acordo com: FROM, TO (lista de destinatários), SUBJECT e MESSAGE."
+      tags:
+        - Email
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        description: "Um objeto EmailDTO deve ser fornecido"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailDTO'
+      responses:
+        200:
+          description: "Ok"
+
+components:
+  schemas:
+    EmailDTO:
+      type: object
+      properties:
+        from:
+          type: string
+          description: "Identifica o remetente do e-mail, geralmente é a aplicação que solicita o envio do e-mail"
+          example: "fale_com@leoduarte.dev.br"
+        to:
+          type: array
+          description: "Um ou mais endereços para onde o e-mail deve ser enviado"
+          items:
+            type: string
+          example:
+            - "usuario1@email.com"
+            - "usuario2@email.com"
+        subject:
+          type: string
+          description: "Assunto do email"
+          example: "Seja bem vindo(a) à nossa plataforma"
+        message:
+          type: string
+          description: "Corpo do email"
+          example: "Este é um exemplo de texto longo [...] que pode estar no conteúdo do email."
+
+  responses:
+    200:
+      description: "Ok"
+    201:
+      description: "Created"
+    400:
+      description: "Bad request"
+    401:
+      description: "Unauthorized"
+    403:
+      description: "Forbidden"
+    500:
+      description: "Internal server error"
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
