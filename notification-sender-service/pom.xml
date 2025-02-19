@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>br.dev.leoduarte</groupId>
+        <artifactId>notification-sender</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>notification-sender-service</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <notification-sender-spec.version>0.0.1-SNAPSHOT</notification-sender-spec.version>
+
+        <!-- ===================================================================== -->
+        <!-- ==================== Docker Image Properties ======================== -->
+        <!-- ===================================================================== -->
+
+        <docker.tag>${project.version}</docker.tag>
+        <docker.verbose>true</docker.verbose>
+        <docker.final.name>
+            ${dockerhub.username}/${project.parent.artifactId}-${project.artifactId}:${docker.tag}
+        </docker.final.name>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>br.dev.leoduarte</groupId>
+            <artifactId>notification-sender-spec</artifactId>
+            <version>${notification-sender-spec.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Springboot Managed Dependencies-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Outras dependencias -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Dependencias de teste -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>docker-build-push</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>${spring-boot-starter-parent.version}</version>
+                        <executions>
+                            <execution>
+                                <id>spring-image</id>
+                                <goals>
+                                    <goal>build-image</goal>
+                                </goals>
+                                <configuration>
+                                    <layers>
+                                        <enabled>true</enabled>
+                                    </layers>
+                                    <image>
+                                        <name>${docker.final.name}</name>
+                                        <publish>true</publish>
+                                    </image>
+                                    <docker>
+                                        <publishRegistry>
+                                            <username>${dockerhub.username}</username>
+                                            <password>${dockerhub.password}</password>
+                                            <url>${dockerhub.registry}</url>
+                                            <email>${dockerhub.email}</email>
+                                        </publishRegistry>
+                                    </docker>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

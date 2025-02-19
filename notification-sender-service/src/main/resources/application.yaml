@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: notification-sender-service
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:prod}
+springdoc:
+  swagger-ui:
+    operationsSorter: alpha
+    tagsSorter: alpha
+  api-docs:
+    enabled: true
+server:
+  port: ${SERVER_PORT:8080}

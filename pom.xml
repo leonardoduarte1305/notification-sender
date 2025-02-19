@@ -25,6 +25,7 @@
 
     <modules>
         <module>notification-sender-spec</module>
+        <module>notification-sender-service</module>
     </modules>
 
     <properties>
@@ -85,7 +86,8 @@
         <jsr305.version>3.0.2</jsr305.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.0.4</springdoc-openapi-starter-webmvc-ui.version>
 
-        <spring-boot-starter-parent.version>${project.parent.version}</spring-boot-starter-parent.version>
+        <spring-boot-starter-parent.version>3.4.2</spring-boot-starter-parent.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
     </properties>
 
     <dependencyManagement>
