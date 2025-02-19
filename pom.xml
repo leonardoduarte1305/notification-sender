@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>br.dev.leoduarte</groupId>
+    <artifactId>notification-sender</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId}</name>
+    <inceptionYear>2025</inceptionYear>
+
+    <description>
+        Projeto destinado ao envio de distintos tipos de notificações e utilizado por diversos projetos.
+        Pode ser usado por API REST ou publicando mensagem em tópico Kafka
+    </description>
+
+    <modules>
+        <module>notification-sender-spec</module>
+    </modules>
+
+    <properties>
+        <!-- ===================================================================== -->
+        <!-- ==================== SCM and Registry Properties ==================== -->
+        <!-- ===================================================================== -->
+
+        <scm-provider>git</scm-provider>
+        <scm-url>git@github.com</scm-url>
+        <scm-username>${scm-username}</scm-username>
+        <repository-name>${project.artifactId}</repository-name>
+        <ssh-scm-connection>git@github.com</ssh-scm-connection>
+
+        <registry-ip>leoduarte.dev.br</registry-ip>
+        <registry-port>8081</registry-port>
+        <maven-releases-repository.name>nexus-maven-releases</maven-releases-repository.name>
+        <maven-snapshots-repository.name>nexus-maven-snapshots</maven-snapshots-repository.name>
+
+        <!-- ===================================================================== -->
+        <!-- ========================= Build Properties ========================== -->
+        <!-- ===================================================================== -->
+
+        <java.version>21</java.version>
+        <encoding>UTF-8</encoding>
+
+        <project.build.indentSize>4</project.build.indentSize>
+        <project.build.lineLength>160</project.build.lineLength>
+        <project.build.os>unknown</project.build.os>
+        <project.build.arch>x86_64</project.build.arch>
+        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+        <project.reporting.source>${encoding}</project.reporting.source>
+        <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
+
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.parameters>true</maven.compiler.parameters>
+        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+        <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+        <maven.compiler.failOnWarning>false</maven.compiler.failOnWarning>
+        <maven.build.indentSize>4</maven.build.indentSize>
+        <maven.deploy.only>false</maven.deploy.only>
+
+        <skipITs>true</skipITs>
+
+        <!-- ===================================================================== -->
+        <!-- ======================= Plugins Properties ========================== -->
+        <!-- ===================================================================== -->
+
+        <openapi-generator-maven-plugin.version>7.11.0</openapi-generator-maven-plugin.version>
+
+        <!-- ===================================================================== -->
+        <!-- ====================== Libraries Properties ========================= -->
+        <!-- ===================================================================== -->
+
+        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+        <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
+        <swagger-annotations.version>2.2.8</swagger-annotations.version>
+        <jsr305.version>3.0.2</jsr305.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.0.4</springdoc-openapi-starter-webmvc-ui.version>
+
+        <spring-boot-starter-parent.version>${project.parent.version}</spring-boot-starter-parent.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.openapitools</groupId>
+                <artifactId>jackson-databind-nullable</artifactId>
+                <version>${jackson-databind-nullable.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>${jsr305.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <scm>
+        <connection>scm:${scm-provider}:${scm-url}/${scm-username}/${repository-name}.git</connection>
+        <developerConnection>
+            scm:${scm-provider}:${ssh-scm-connection}:${scm-username}/${repository-name}.git
+        </developerConnection>
+        <url>${scm-url}/${scm-username}/${repository-name}</url>
+        <tag>${project.version}</tag>
+    </scm>
+
+    <issueManagement>
+        <system>Github</system>
+        <url>${scm-url}/${scm-username}/${repository-name}/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus-maven-releases</id>
+            <name>Maven Hosted Releases Repository</name>
+            <url>http://${registry-ip}:${registry-port}/nexus/content/repositories/${maven-releases-repository.name}/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-maven-snapshots</id>
+            <name>Maven Hosted Snapshots Repository</name>
+            <url>http://${registry-ip}:${registry-port}/nexus/content/repositories/${maven-snapshots-repository.name}/</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>
