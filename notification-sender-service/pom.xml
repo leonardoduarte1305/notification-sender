@@ -23,7 +23,7 @@
         <docker.tag>${project.version}</docker.tag>
         <docker.verbose>true</docker.verbose>
         <docker.final.name>
-            ${dockerhub.username}/${project.parent.artifactId}-${project.artifactId}:${docker.tag}
+            ${dockerhub.username}/${project.artifactId}:${docker.tag}
         </docker.final.name>
     </properties>
 
