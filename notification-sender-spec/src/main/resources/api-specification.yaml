@@ -68,7 +68,11 @@ components:
       properties:
         from:
           type: string
-          description: "Identifica o remetente do e-mail, geralmente é a aplicação que solicita o envio do e-mail"
+          description: |
+            "Identifica o remetente do e-mail, geralmente é a aplicação que solicita o envio do e-mail.
+            
+            - ESTE RECURSO AINDA NÃO FOI IMPLEMENTADO, o FROM UTILIZADO ATUALMENTE É O CADASTRADO NO SERVIÇO 
+            notification-sender-service"
           example: "fale_com@leoduarte.dev.br"
         to:
           type: array
@@ -86,6 +90,14 @@ components:
           type: string
           description: "Corpo do email"
           example: "Este é um exemplo de texto longo [...] que pode estar no conteúdo do email."
+        attachmentsAbsolutePath:
+          type: string
+          description: "Caminho absoluto do arquivo a ser enviado anexado (com nome e extensão)."
+          example: "/tmp/f591ab9b-1156-4a2e-a2a1-3a0f8d05b2b5.txt"
+        attachmentsNameToBeDisplayed:
+          type: string
+          description: "Nome e extensão que aparecerá no email."
+          example: "anexo-com-nome-especifico.txt"
 
   responses:
     200:

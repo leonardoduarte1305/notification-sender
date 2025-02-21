@@ -31,6 +31,10 @@ mvn clean package
 ### Empacota, gera imagem de contêiner e envia para o DockerHub a imagem gerada
 
 A utilização do profile "docker-build-push" surte efeito apenas no módulo de serviço
+(Deve-se tomar cuidado neste passo porque uma imagem criada no MacOS (arm64)
+não é compatível para rodar no Linux (amd64))
+
+Solução encontrada para este problema: executar este passo em uma máquina Linux
 
 ````
 mvn clean package -Pdocker-build-push

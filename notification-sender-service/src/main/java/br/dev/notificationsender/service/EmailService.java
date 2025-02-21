@@ -8,9 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Profile("prod")
@@ -23,24 +26,21 @@ public class EmailService {
     private final EmailConfig emailConfig;
 
     @Async
-    public void enviarEmail(EmailDTO emailDTO) {
-        emailDTO.getTo()
-                .forEach(to -> {
-            try {
-                MimeMessage message = mailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(message, true);
-                helper.setFrom(emailConfig.getFrom());
-                helper.setTo(to);
-                helper.setSubject(emailDTO.getSubject());
-                helper.setText(emailDTO.getMessage());
+    @Retryable(retryFor = MessagingException.class, maxAttempts = 2, backoff = @Backoff(delay = 3000))
+    public CompletableFuture<Void> enviarEmail(EmailDTO emailDTO) {
+        try {
+            MimeMessage emailPreenchido = new PreencherEmail().preencher(emailConfig.getFrom(), emailDTO, mailSender);
 
-                log.info("Enviando email de: {}, para: {}, com assunto: {} e corpo: {}",emailDTO.getFrom(), to, emailDTO.getSubject(), emailDTO.getMessage());
+            log.debug("Enviando email de: {}, para: {}, assunto: {}.", emailDTO.getFrom(), emailDTO.getTo(), emailDTO.getSubject());
 
-                mailSender.send(message);
-            } catch ( MessagingException e) {
-                log.error(e.getMessage(), e);
-            }
-        });
+            mailSender.send(emailPreenchido);
+            return CompletableFuture.completedFuture(null);
+        } catch (MessagingException e) {
+            log.error("Erro ao enviar e-mail de: {} para: {}. Assunto: {}.",
+                    emailDTO.getFrom(), emailDTO.getTo(), emailDTO.getSubject(), e);
+
+            return CompletableFuture.failedFuture(e);
+        }
     }
 
 }
