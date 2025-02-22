@@ -1,4 +1,4 @@
-package br.dev.notificationsender.configuration;
+package br.dev.notificationsender.configuration.xapikey;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

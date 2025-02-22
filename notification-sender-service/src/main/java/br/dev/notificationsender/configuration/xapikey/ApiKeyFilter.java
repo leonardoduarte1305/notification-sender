@@ -1,4 +1,4 @@
-package br.dev.notificationsender.configuration;
+package br.dev.notificationsender.configuration.xapikey;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.*;
@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static br.dev.notificationsender.common.ErrorMessages.INVALID_X_API_KEY;
-import static br.dev.notificationsender.common.ErrorMessages.MISSING_X_API_KEY;
+import static br.dev.notificationsender.exceptions.ErrorMessages.INVALID_X_API_KEY;
+import static br.dev.notificationsender.exceptions.ErrorMessages.MISSING_X_API_KEY;
 import static java.util.Objects.isNull;
 
 @Component
