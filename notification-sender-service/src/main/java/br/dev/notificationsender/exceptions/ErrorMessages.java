@@ -1,4 +1,4 @@
-package br.dev.notificationsender.common;
+package br.dev.notificationsender.exceptions;
 
 import lombok.Getter;
 
