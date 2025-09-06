@@ -17,12 +17,7 @@ public class EmailController implements EnviarEmailApi {
 
     @Override
     public ResponseEntity<Void> enviarEmailSemAnexo(EmailDTO emailDTO) {
-        if(log.isDebugEnabled()) {
-            log.debug("Enviando email para: {}, com assunto: {}", emailDTO.getTo(), emailDTO.getSubject());
-        }
-
         emailService.enviarEmail(emailDTO);
-
         return ResponseEntity.ok().build();
     }
 

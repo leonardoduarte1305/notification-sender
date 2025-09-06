@@ -35,7 +35,7 @@
 
         <scm-provider>git</scm-provider>
         <scm-url>git@github.com</scm-url>
-        <scm-username>${scm-username}</scm-username>
+        <scm-username>${settings-xml.scm-username}</scm-username>
         <repository-name>${project.artifactId}</repository-name>
         <ssh-scm-connection>git@github.com</ssh-scm-connection>
 
