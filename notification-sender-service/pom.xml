@@ -125,6 +125,8 @@
                                             <email>${dockerhub.email}</email>
                                         </publishRegistry>
                                     </docker>
+                                    <imageBuilder>docker.io/paketobuildpacks/builder-jammy-java-tiny:latest
+                                    </imageBuilder>
                                 </configuration>
                             </execution>
                         </executions>

@@ -34,15 +34,17 @@
         <!-- ===================================================================== -->
 
         <scm-provider>git</scm-provider>
-        <scm-url>git@github.com</scm-url>
-        <scm-username>${settings-xml.scm-username}</scm-username>
-        <repository-name>${project.artifactId}</repository-name>
+        <scm-url>https://github.com</scm-url>
+        <repository-name>${project.name}</repository-name>
         <ssh-scm-connection>git@github.com</ssh-scm-connection>
+        <scm-username>${settings-xml.scm-username}</scm-username>
 
-        <registry-ip>leoduarte.dev.br</registry-ip>
-        <registry-port>8081</registry-port>
-        <maven-releases-repository.name>nexus-maven-releases</maven-releases-repository.name>
-        <maven-snapshots-repository.name>nexus-maven-snapshots</maven-snapshots-repository.name>
+        <registry-port>443</registry-port>
+        <registry-protocol>https</registry-protocol>
+        <registry-host>registry.leoduarte.dev.br</registry-host>
+        <repository-path>nexus/content/repositories</repository-path>
+        <repository-releases.name>nexus-maven-releases</repository-releases.name>
+        <repository-snapshots.name>nexus-maven-snapshots</repository-snapshots.name>
 
         <!-- ===================================================================== -->
         <!-- ========================= Build Properties ========================== -->
@@ -88,6 +90,18 @@
 
         <spring-boot-starter-parent.version>3.5.14</spring-boot-starter-parent.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+
+        <!-- ===================================================================== -->
+        <!-- ============================= Docker ================================ -->
+        <!-- ===================================================================== -->
+
+        <spring-boot-starter-parent.version>3.5.14</spring-boot-starter-parent.version>
+        <docker.verbose>true</docker.verbose>
+        <docker.tag>${project.version}</docker.tag>
+        <docker.final.name>
+            ${dockerhub.username}/${project.artifactId}:${docker.tag}
+        </docker.final.name>
+
     </properties>
 
     <dependencyManagement>
@@ -149,12 +163,16 @@
         <repository>
             <id>nexus-maven-releases</id>
             <name>Maven Hosted Releases Repository</name>
-            <url>http://${registry-ip}:${registry-port}/nexus/content/repositories/${maven-releases-repository.name}/</url>
+            <url>
+                ${registry-protocol}://${registry-host}:${registry-port}/${repository-path}/${repository-releases.name}/
+            </url>
         </repository>
         <snapshotRepository>
             <id>nexus-maven-snapshots</id>
             <name>Maven Hosted Snapshots Repository</name>
-            <url>http://${registry-ip}:${registry-port}/nexus/content/repositories/${maven-snapshots-repository.name}/</url>
+            <url>
+                ${registry-protocol}://${registry-host}:${registry-port}/${repository-path}/${repository-snapshots.name}/
+            </url>
         </snapshotRepository>
     </distributionManagement>
 </project>
