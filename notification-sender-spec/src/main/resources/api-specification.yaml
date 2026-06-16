@@ -50,6 +50,8 @@ paths:
         - Email
       security:
         - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/x-api-key'
       requestBody:
         required: true
         description: "Um objeto EmailDTO deve ser fornecido"
@@ -98,6 +100,15 @@ components:
           type: string
           description: "Nome e extensão que aparecerá no email."
           example: "anexo-com-nome-especifico.txt"
+
+  parameters:
+    x-api-key:
+      name: x-api-key
+      in: header
+      required: true
+      description: "Chave de acesso"
+      schema:
+        type: string
 
   responses:
     200:

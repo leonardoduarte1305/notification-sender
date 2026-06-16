@@ -16,7 +16,7 @@ public class EmailController implements EnviarEmailApi {
     private final EmailService emailService;
 
     @Override
-    public ResponseEntity<Void> enviarEmailSemAnexo(EmailDTO emailDTO) {
+    public ResponseEntity<Void> enviarEmailSemAnexo(String xApiKey, EmailDTO emailDTO) {
         emailService.enviarEmail(emailDTO);
         return ResponseEntity.ok().build();
     }

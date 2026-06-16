@@ -12,6 +12,15 @@ spring:
           auth: true
           starttls:
             enable: true
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+    version: openapi_3_0
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    url: /api-docs
 app:
   security:
     x-api-key: ${X_API_KEY}
