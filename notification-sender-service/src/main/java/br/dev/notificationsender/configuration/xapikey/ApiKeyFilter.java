@@ -32,6 +32,11 @@ public class ApiKeyFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
+        if (!isPostRequest(httpRequest)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String apiKeyRecebida = httpRequest.getHeader(API_KEY_HEADER);
 
         if (isNull(apiKeyRecebida)) {
@@ -45,6 +50,10 @@ public class ApiKeyFilter implements Filter {
         }
 
         chain.doFilter(request, response);
+    }
+
+    private static boolean isPostRequest(HttpServletRequest httpRequest) {
+        return "POST".equalsIgnoreCase(httpRequest.getMethod());
     }
 
     private boolean apiKeyNaoConfere(String receivedApiKey) {
