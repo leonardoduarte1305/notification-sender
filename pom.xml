@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.2</version>
+        <version>3.5.14</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -82,11 +82,11 @@
 
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
         <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
-        <swagger-annotations.version>2.2.8</swagger-annotations.version>
-        <jsr305.version>3.0.2</jsr305.version>
-        <springdoc-openapi-starter-webmvc-ui.version>2.0.4</springdoc-openapi-starter-webmvc-ui.version>
+        <swagger-annotations.version>2.2.49</swagger-annotations.version>
+        <spotbugs-annotations.version>4.10.2</spotbugs-annotations.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.7.0</springdoc-openapi-starter-webmvc-ui.version>
 
-        <spring-boot-starter-parent.version>3.4.2</spring-boot-starter-parent.version>
+        <spring-boot-starter-parent.version>3.5.14</spring-boot-starter-parent.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
     </properties>
 
@@ -109,9 +109,10 @@
                 <version>${swagger-annotations.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>jsr305</artifactId>
-                <version>${jsr305.version}</version>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>${spotbugs-annotations.version}</version>
+                <scope>compile</scope>
             </dependency>
             <dependency>
                 <groupId>org.springdoc</groupId>
