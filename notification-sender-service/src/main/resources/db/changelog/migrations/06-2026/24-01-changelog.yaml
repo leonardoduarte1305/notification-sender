@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1782329635702-1
+      author: leonardosilva
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_processed_email_events
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: event_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: event_type
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: processed_at
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: status
+                  type: VARCHAR(255)
+            tableName: processed_email_events
+  - changeSet:
+      id: 1782329635702-2
+      author: leonardosilva
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: event_id
+            constraintName: uc_processed_email_events_event
+            tableName: processed_email_events
+

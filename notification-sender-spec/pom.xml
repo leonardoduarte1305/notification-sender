@@ -14,7 +14,6 @@
     <packaging>jar</packaging>
 
     <properties>
-        <client-base-package>br.dev.leoduarte.notificationsender.client</client-base-package>
         <server-base-package>br.dev.leoduarte.notificationsender.server</server-base-package>
         <api-resources>${project.basedir}/src/main/resources</api-resources>
     </properties>
@@ -49,6 +48,10 @@
         <dependency>
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
     </dependencies>
 
@@ -90,39 +93,6 @@
                 <version>${openapi-generator-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>Generating Client Artifacts</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${api-resources}/api-specification.yaml</inputSpec>
-                            <templateDirectory>${api-resources}/client-templates</templateDirectory>
-                            <generatorName>java</generatorName>
-                            <generateApiTests>false</generateApiTests>
-                            <generateModelTests>false</generateModelTests>
-                            <output>${project.build.directory}/generated-sources/openapi/</output>
-                            <configOptions>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <library>resttemplate</library>
-                                <dateLibrary>java8</dateLibrary>
-                                <useJakartaEe>true</useJakartaEe>
-                                <interfaceOnly>true</interfaceOnly>
-                                <skipDefaultInterface>true</skipDefaultInterface>
-                                <apiPackage>${client-base-package}</apiPackage>
-                                <modelPackage>${client-base-package}.model</modelPackage>
-                                <configurationPackage>${client-base-package}.configuration</configurationPackage>
-                                <invokerPackage>${client-base-package}.invoker</invokerPackage>
-
-                                <!--Set Springboot version used in generated code (use recent log4j version)-->
-                                <parentGroupId>org.springframework.boot</parentGroupId>
-                                <parentArtifactId>spring-boot-starter-parent</parentArtifactId>
-                                <parentVersion>${spring-boot-starter-parent.version}</parentVersion>
-                            </configOptions>
-                            <additionalProperties>removeEnumValuePrefix=false</additionalProperties>
-                        </configuration>
-                    </execution>
-
-                    <execution>
                         <id>Generating Server Artifacts</id>
                         <goals>
                             <goal>generate</goal>
@@ -134,7 +104,7 @@
                             <generatorName>spring</generatorName>
                             <output>${project.build.directory}/generated-sources/openapi/</output>
                             <configOptions>
-                                <useSpringBoot3>true</useSpringBoot3>
+                                <useSpringBoot4>true</useSpringBoot4>
                                 <useJakartaEe>true</useJakartaEe>
                                 <library>spring-boot</library>
                                 <dateLibrary>java8</dateLibrary>

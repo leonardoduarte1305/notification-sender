@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.14</version>
+        <version>4.0.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -76,7 +76,7 @@
         <!-- ======================= Plugins Properties ========================== -->
         <!-- ===================================================================== -->
 
-        <openapi-generator-maven-plugin.version>7.11.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.23.0</openapi-generator-maven-plugin.version>
 
         <!-- ===================================================================== -->
         <!-- ====================== Libraries Properties ========================= -->
@@ -86,9 +86,9 @@
         <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
         <swagger-annotations.version>2.2.49</swagger-annotations.version>
         <spotbugs-annotations.version>4.10.2</spotbugs-annotations.version>
+        <spring-retry.version>2.0.12</spring-retry.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.7.0</springdoc-openapi-starter-webmvc-ui.version>
 
-        <spring-boot-starter-parent.version>3.5.14</spring-boot-starter-parent.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
 
         <!-- ===================================================================== -->

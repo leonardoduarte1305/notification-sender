@@ -12,6 +12,28 @@ spring:
           auth: true
           starttls:
             enable: true
+  kafka:
+    admin:
+      auto-create: true
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: notification-sender-service-consumer
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:key}:${POSTGRES_PORT:key}/${POSTGRES_DB:key}
+    username: ${POSTGRES_USER:key}
+    password: ${POSTGRES_PASSWORD:key}
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    enabled: true
+    default-schema: public
+    liquibase-schema: public
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+  jpa:
+    open-in-view: false
 springdoc:
   api-docs:
     enabled: true
@@ -24,3 +46,6 @@ springdoc:
 app:
   security:
     x-api-key: ${X_API_KEY}
+  kafka:
+    email:
+      topico-dlq-envio-falho: emails-nao-enviados-dlq
