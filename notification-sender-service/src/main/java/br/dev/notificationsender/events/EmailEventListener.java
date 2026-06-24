@@ -5,7 +5,7 @@ import br.dev.notificationsender.events.contratos.FaturaEmitidaEvent;
 import br.dev.notificationsender.events.contratos.factories.templates.DadosEmail;
 import br.dev.notificationsender.events.entity.ProcessedEmailEvent;
 import br.dev.notificationsender.events.repository.ProcessedEmailEventRepository;
-import br.dev.notificationsender.service.EmailServiceProdImpl;
+import br.dev.notificationsender.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ import static br.dev.notificationsender.events.contratos.factories.GeradorCorpoE
 @RequiredArgsConstructor
 public class EmailEventListener {
 
-    private final EmailServiceProdImpl service;
+    private final EmailService service;
 
     private final ProcessedEmailEventRepository repository;
 

@@ -1,8 +1,0 @@
-springdoc:
-  swagger-ui:
-    operationsSorter: alpha
-    tagsSorter: alpha
-  api-docs:
-    enabled: true
-server:
-  port: ${SERVER_PORT:8080}
