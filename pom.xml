@@ -95,7 +95,7 @@
         <!-- ============================= Docker ================================ -->
         <!-- ===================================================================== -->
 
-        <spring-boot-starter-parent.version>3.5.14</spring-boot-starter-parent.version>
+        <spring-boot-starter-parent.version>4.0.5</spring-boot-starter-parent.version>
         <docker.verbose>true</docker.verbose>
         <docker.tag>${project.version}</docker.tag>
         <docker.final.name>
@@ -141,6 +141,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-starter-parent.version}</version>
             </plugin>
         </plugins>
     </build>
