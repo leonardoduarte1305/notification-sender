@@ -1,8 +1,12 @@
 package br.dev.notificationsender.exceptions;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.PRIVATE;
 
 @Getter
+@NoArgsConstructor(access = PRIVATE)
 public class ErrorMessages {
 
     public static final String MISSING_X_API_KEY = "x-api-key is missing";

@@ -23,7 +23,7 @@ public class KafkaConsumerConfig {
     public DefaultErrorHandler errorHandler() {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
                 kafkaTemplate,
-                (record, exception) -> new TopicPartition(topicoDlq, record.partition())
+                (letter, exception) -> new TopicPartition(topicoDlq, letter.partition())
         );
 
         FixedBackOff backOff = new FixedBackOff(1000L, 3L);
