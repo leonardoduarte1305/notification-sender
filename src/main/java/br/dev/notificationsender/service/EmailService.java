@@ -7,6 +7,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -23,7 +24,7 @@ public class EmailService {
 
     private final EmailConfig emailConfig;
 
-    @Retryable(retryFor = MessagingException.class, maxAttempts = 2, backoff = @Backoff(delay = 3000))
+    @Retryable(retryFor = EmailSendingFailureExeption.class, maxAttempts = 2, backoff = @Backoff(delay = 3000))
     public CompletableFuture<Void> enviarEmail(EmailDTO emailDTO) {
         try {
             MimeMessage emailPreenchido = new PreencherEmail().preencher(emailConfig.getFrom(), emailDTO, mailSender);
@@ -32,11 +33,11 @@ public class EmailService {
 
             mailSender.send(emailPreenchido);
             return CompletableFuture.completedFuture(null);
-        } catch (MessagingException e) {
+        } catch (MessagingException | MailException e) {
             log.error("Erro ao enviar e-mail de: {} para: {}. Assunto: {}.",
                     emailDTO.getFrom(), emailDTO.getTo(), emailDTO.getSubject(), e);
 
-            throw new EmailSendingFailureExeption(e.getLocalizedMessage());
+            throw new EmailSendingFailureExeption(e.getLocalizedMessage(), e);
         }
     }
 
