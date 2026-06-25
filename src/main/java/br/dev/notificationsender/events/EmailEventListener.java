@@ -3,6 +3,7 @@ package br.dev.notificationsender.events;
 import br.dev.notificationsender.events.contratos.EmailDTO;
 import br.dev.notificationsender.events.contratos.FaturaEmitidaEvent;
 import br.dev.notificationsender.events.contratos.factories.templates.DadosEmail;
+import br.dev.notificationsender.events.validation.FaturaEmitidaEventValidator;
 import br.dev.notificationsender.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +23,15 @@ public class EmailEventListener {
 
     private final ProcessedEmailEventService processedEmailEventService;
 
+    private final FaturaEmitidaEventValidator validator;
+
     @KafkaListener(topics = "topico-envio-email")
     public void consumirEmissaoDeFaturas(FaturaEmitidaEvent payload) {
         boolean eventoReservado = false;
 
         try {
+            validator.validate(payload);
+
             eventoReservado = processedEmailEventService.reservarParaProcessamento(payload.eventId(), payload.eventType());
             if (!eventoReservado) {
                 return;
