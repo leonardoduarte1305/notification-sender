@@ -2,9 +2,9 @@ package br.dev.notificationsender;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.retry.annotation.EnableRetry;
 
-@EnableAsync
+@EnableRetry
 @SpringBootApplication
 public class NotificationSenderApplication {
 
