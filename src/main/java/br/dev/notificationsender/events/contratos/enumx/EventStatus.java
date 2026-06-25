@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum EventStatus {
 
+    PROCESSING("PROCESSING"),
+
     FINISHED("FINISHED"),
 
     FAILED("FAILED");

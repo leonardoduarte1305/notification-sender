@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -45,6 +46,10 @@ public class ProcessedEmailEvent {
     @Column(name = "status", nullable = false)
     private EventStatus status;
 
+    @Version
+    @Column(name = "version", nullable = false)
+    private Long version;
+
     public ProcessedEmailEvent(UUID eventId, EventType eventType, EventStatus status) {
         this.eventId = eventId;
         this.eventType = eventType;
@@ -56,6 +61,12 @@ public class ProcessedEmailEvent {
         this.eventType = eventType;
         this.processedAt = Instant.now();
         this.status = EventStatus.FINISHED;
+    }
+
+    public void marcarComoFalha(EventType eventType) {
+        this.eventType = eventType;
+        this.processedAt = Instant.now();
+        this.status = EventStatus.FAILED;
     }
 
 }
