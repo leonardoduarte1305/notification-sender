@@ -13,12 +13,10 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.converter.BytesJacksonJsonMessageConverter;
 import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 import java.util.UUID;
 
-import static br.dev.notificationsender.events.contratos.enumx.EventStatus.FAILED;
 import static br.dev.notificationsender.events.contratos.enumx.EventStatus.FINISHED;
 import static br.dev.notificationsender.events.contratos.factories.GeradorCorpoEmailFactory.criarNotificacaoByEventType;
 
@@ -44,23 +42,26 @@ public class EmailEventListener {
         return new BytesJacksonJsonMessageConverter();
     }
 
-    @TransactionalEventListener
     @KafkaListener(topics = "topico-envio-email")
     public void consumirEmissaoDeFaturas(FaturaEmitidaEvent payload) {
-        if (eventoJaProcessado(payload.eventId())) {
-            return;
-        }
-
         try {
+            if (eventoJaProcessado(payload.eventId())) {
+                log.info("Evento de e-mail ja processado. eventId={}, eventType={}", payload.eventId(), payload.eventType());
+                return;
+            }
+
             DadosEmail dadosEmail = criarNotificacaoByEventType(payload);
             EmailDTO emailDTO = generateEmailDTO(payload, dadosEmail);
             service.enviarEmail(emailDTO).join();
 
             ProcessedEmailEvent eventoProcessado = new ProcessedEmailEvent(payload.eventId(), payload.eventType(), FINISHED);
             repository.save(eventoProcessado);
-        } catch (Exception e) {
-            ProcessedEmailEvent eventoProcessado = new ProcessedEmailEvent(payload.eventId(), payload.eventType(), FAILED);
-            repository.save(eventoProcessado);
+        } catch (RuntimeException e) {
+            log.error("Falha ao consumir evento de e-mail. eventId={}, eventType={}",
+                    payload != null ? payload.eventId() : null,
+                    payload != null ? payload.eventType() : null,
+                    e);
+            throw e;
         }
     }
 
