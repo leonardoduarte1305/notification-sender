@@ -2,7 +2,6 @@ package br.dev.notificationsender.events;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.TopicPartition;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,14 +15,13 @@ public class KafkaConsumerConfig {
 
     private final KafkaTemplate<Object, Object> kafkaTemplate;
 
-    @Value("${app.kafka.email.topico-dlq-envio-falho}")
-    private String topicoDlq;
+    private static final String TOPICO_DLQ = "topico-dlq";
 
     @Bean
     public DefaultErrorHandler errorHandler() {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(
                 kafkaTemplate,
-                (letter, exception) -> new TopicPartition(topicoDlq, letter.partition())
+                (letter, exception) -> new TopicPartition(TOPICO_DLQ, letter.partition())
         );
 
         FixedBackOff backOff = new FixedBackOff(1000L, 3L);

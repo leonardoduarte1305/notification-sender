@@ -38,7 +38,6 @@ pipeline {
             steps {
                 sh """
                    sed -i 's/^NOTIFICATION_SENDER_VERSION=.*/NOTIFICATION_SENDER_VERSION=${IMAGE_VERSION}/' /deploy/server-asus/.env
-                   cat /deploy/server-asus/.env
                 """
             }
         }

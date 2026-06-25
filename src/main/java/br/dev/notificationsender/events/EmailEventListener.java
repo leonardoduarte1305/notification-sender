@@ -1,6 +1,6 @@
 package br.dev.notificationsender.events;
 
-import br.dev.leoduarte.notificationsender.server.model.EmailDTO;
+import br.dev.notificationsender.events.contratos.EmailDTO;
 import br.dev.notificationsender.events.contratos.FaturaEmitidaEvent;
 import br.dev.notificationsender.events.contratos.factories.templates.DadosEmail;
 import br.dev.notificationsender.events.entity.ProcessedEmailEvent;
@@ -29,6 +29,14 @@ public class EmailEventListener {
 
     private final ProcessedEmailEventRepository repository;
 
+    private static EmailDTO generateEmailDTO(FaturaEmitidaEvent payload, DadosEmail dadosEmail) {
+        EmailDTO emailDTO = new EmailDTO();
+        emailDTO.setTo(List.of(payload.destinatario()));
+        emailDTO.setSubject(dadosEmail.getSubject());
+        emailDTO.setMessage(dadosEmail.getMessage());
+        return emailDTO;
+    }
+
     @Bean
     public RecordMessageConverter converter() {
         return new BytesJacksonJsonMessageConverter();
@@ -50,14 +58,6 @@ public class EmailEventListener {
 
     private boolean eventoJaProcessado(UUID eventId) {
         return repository.existsByEventIdAndStatus(eventId, FINISHED);
-    }
-
-    private static EmailDTO generateEmailDTO(FaturaEmitidaEvent payload, DadosEmail dadosEmail) {
-        EmailDTO emailDTO = new EmailDTO();
-        emailDTO.setTo(List.of(payload.destinatario()));
-        emailDTO.setSubject(dadosEmail.getSubject());
-        emailDTO.setMessage(dadosEmail.getMessage());
-        return emailDTO;
     }
 
 }

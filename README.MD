@@ -6,20 +6,6 @@
 
 # Notification Sender - Overview
 
-### Módulo notification-sender-spec
-
-#### - Define os endpoints para os respectivos envios
-
-#### - Recurso  principal: [api-spec](./notification-sender-spec/src/main/resources/api-specification.yaml)
-
-### Módulo notification-sender-service
-
-#### - Implementa os endpoints definidos na especificação e dá outras opções
-
-### [Ao adicionar novos recursos preenchê-los aqui]
-
-<hr>
-
 ## Instruções de build
 
 ### Empacota
@@ -76,10 +62,17 @@ docker.io/leonardoduarte1305/notification-sender-service:0.0.1-SNAPSHOT
 
 ### As variáveis de ambiente necessárias são as seguintes:
 
-    SERVER_PORT=8080
-    SPRING_MAIL_HOST=smtp.email.com
+    SPRING_MAIL_HOST=smtp.gmail.com
     SPRING_MAIL_PORT=587
-    SPRING_MAIL_USERNAME=username
-    SPRING_MAIL_PASSWORD=senha
-    SPRING_PROFILES_ACTIVE=local
-    X_API_KEY=ApiKeyAceitaPeloServicoDeEmail
+    SPRING_MAIL_USERNAME=username_secreto
+    SPRING_MAIL_PASSWORD=senha_super_secreta
+    
+    SERVER_PORT=8086
+    
+    KAFKA_BOOTSTRAP_SERVERS=localhost:9092
+    
+    POSTGRES_HOST=localhost
+    POSTGRES_PORT=5432
+    POSTGRES_DB=schema_do_banco
+    POSTGRES_USER=user_do_banco
+    POSTGRES_PASSWORD=senha_do_banco

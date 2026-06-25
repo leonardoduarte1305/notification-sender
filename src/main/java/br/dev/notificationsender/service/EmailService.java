@@ -1,7 +1,7 @@
 package br.dev.notificationsender.service;
 
-import br.dev.leoduarte.notificationsender.server.model.EmailDTO;
 import br.dev.notificationsender.configuration.EmailConfig;
+import br.dev.notificationsender.events.contratos.EmailDTO;
 import br.dev.notificationsender.exceptions.EmailSendingFailureExeption;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

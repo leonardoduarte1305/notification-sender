@@ -51,4 +51,5 @@ public class ProcessedEmailEvent {
         this.processedAt = Instant.now();
         this.status = status;
     }
+
 }

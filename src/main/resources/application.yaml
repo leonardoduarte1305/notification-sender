@@ -1,6 +1,6 @@
 spring:
   application:
-    name: notification-sender-service
+    name: notification-sender
   mail:
     host: ${SPRING_MAIL_HOST}
     port: ${SPRING_MAIL_PORT}
@@ -21,37 +21,19 @@ spring:
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: notification-sender-service-consumer
+      group-id: notification-sender
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:key}:${POSTGRES_PORT:key}/${POSTGRES_DB:key}
-    username: ${POSTGRES_USER:key}
-    password: ${POSTGRES_PASSWORD:key}
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
-
   liquibase:
     enabled: true
     default-schema: public
     liquibase-schema: public
     change-log: classpath:/db/changelog/db.changelog-master.yaml
-
   jpa:
     open-in-view: false
-springdoc:
-  api-docs:
-    enabled: true
-    path: /api-docs
-    version: openapi_3_0
-  swagger-ui:
-    enabled: true
-    operationsSorter: alpha
-    tagsSorter: alpha
-    path: /swagger-ui.html
-    url: /api-docs
-app:
-  security:
-    x-api-key: ${X_API_KEY}
-  kafka:
-    email:
-      topico-dlq-envio-falho: emails-nao-enviados-dlq
+
 server:
   port: ${SERVER_PORT:8085}
