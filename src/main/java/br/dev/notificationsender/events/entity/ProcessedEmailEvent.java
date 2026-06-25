@@ -52,4 +52,10 @@ public class ProcessedEmailEvent {
         this.status = status;
     }
 
+    public void marcarComoFinalizado(EventType eventType) {
+        this.eventType = eventType;
+        this.processedAt = Instant.now();
+        this.status = EventStatus.FINISHED;
+    }
+
 }

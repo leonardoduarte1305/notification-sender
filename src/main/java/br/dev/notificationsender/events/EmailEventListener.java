@@ -1,6 +1,7 @@
 package br.dev.notificationsender.events;
 
 import br.dev.notificationsender.events.contratos.EmailDTO;
+import br.dev.notificationsender.events.contratos.enumx.EventType;
 import br.dev.notificationsender.events.contratos.FaturaEmitidaEvent;
 import br.dev.notificationsender.events.contratos.factories.templates.DadosEmail;
 import br.dev.notificationsender.events.entity.ProcessedEmailEvent;
@@ -15,6 +16,7 @@ import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static br.dev.notificationsender.events.contratos.enumx.EventStatus.FINISHED;
@@ -54,8 +56,7 @@ public class EmailEventListener {
             EmailDTO emailDTO = generateEmailDTO(payload, dadosEmail);
             service.enviarEmail(emailDTO).join();
 
-            ProcessedEmailEvent eventoProcessado = new ProcessedEmailEvent(payload.eventId(), payload.eventType(), FINISHED);
-            repository.save(eventoProcessado);
+            repository.save(upsertEventoFinalizado(payload.eventId(), payload.eventType()));
         } catch (RuntimeException e) {
             log.error("Falha ao consumir evento de e-mail. eventId={}, eventType={}",
                     payload != null ? payload.eventId() : null,
@@ -67,6 +68,18 @@ public class EmailEventListener {
 
     private boolean eventoJaProcessado(UUID eventId) {
         return repository.existsByEventIdAndStatus(eventId, FINISHED);
+    }
+
+    private ProcessedEmailEvent upsertEventoFinalizado(UUID eventId, EventType eventType) {
+        Optional<ProcessedEmailEvent> eventoExistente = repository.findByEventId(eventId);
+
+        if (eventoExistente.isEmpty()) {
+            return new ProcessedEmailEvent(eventId, eventType, FINISHED);
+        }
+
+        ProcessedEmailEvent eventoProcessado = eventoExistente.get();
+        eventoProcessado.marcarComoFinalizado(eventType);
+        return eventoProcessado;
     }
 
 }
