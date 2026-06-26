@@ -23,10 +23,12 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
+    private final MimeMessageFactory mimeMessageFactory;
+
     @Retryable(retryFor = EmailSendingFailureExeption.class, maxAttempts = 2, backoff = @Backoff(delay = 3000))
     public void enviarEmail(EmailDTO emailDTO) {
         try {
-            MimeMessage emailPreenchido = new PreencherEmail().preencher(from, emailDTO, mailSender);
+            MimeMessage emailPreenchido = mimeMessageFactory.preencher(from, emailDTO, mailSender);
 
             log.debug("Enviando email de: {}, para: {}, assunto: {}.", from, emailDTO.getTo(), emailDTO.getSubject());
 

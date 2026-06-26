@@ -6,11 +6,13 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 
 @Slf4j
-public class PreencherEmail {
+@Component
+public class MimeMessageFactory {
 
     public MimeMessage preencher(String from, EmailDTO emailDTO, JavaMailSender mailSender) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
