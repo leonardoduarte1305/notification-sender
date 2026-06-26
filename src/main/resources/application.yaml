@@ -12,6 +12,9 @@ spring:
       mail:
         smtp:
           auth: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
           starttls:
             enable: true
   kafka:
@@ -37,3 +40,8 @@ spring:
 
 server:
   port: ${SERVER_PORT:8085}
+
+app:
+  mail:
+    # NOTIFICATION_MAIL_FROM = Username personalizado que aparece no email enviado
+    from: ${NOTIFICATION_MAIL_FROM:${SPRING_MAIL_HOST}}
