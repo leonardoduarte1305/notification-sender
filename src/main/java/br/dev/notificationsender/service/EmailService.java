@@ -13,8 +13,6 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.CompletableFuture;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,14 +24,13 @@ public class EmailService {
     private final JavaMailSender mailSender;
 
     @Retryable(retryFor = EmailSendingFailureExeption.class, maxAttempts = 2, backoff = @Backoff(delay = 3000))
-    public CompletableFuture<Void> enviarEmail(EmailDTO emailDTO) {
+    public void enviarEmail(EmailDTO emailDTO) {
         try {
             MimeMessage emailPreenchido = new PreencherEmail().preencher(from, emailDTO, mailSender);
 
             log.debug("Enviando email de: {}, para: {}, assunto: {}.", from, emailDTO.getTo(), emailDTO.getSubject());
 
             mailSender.send(emailPreenchido);
-            return CompletableFuture.completedFuture(null);
         } catch (MessagingException | MailException e) {
             log.error("Erro ao enviar e-mail de: {} para: {}. Assunto: {}.",
                     from, emailDTO.getTo(), emailDTO.getSubject(), e);

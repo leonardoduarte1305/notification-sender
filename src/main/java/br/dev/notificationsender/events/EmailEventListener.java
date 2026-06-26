@@ -39,7 +39,7 @@ public class EmailEventListener {
 
             DadosEmail dadosEmail = criarNotificacaoByEventType(payload);
             EmailDTO emailDTO = generateEmailDTO(payload, dadosEmail);
-            service.enviarEmail(emailDTO).join();
+            service.enviarEmail(emailDTO);
 
             processedEmailEventService.marcarComoFinalizado(payload.eventId(), payload.eventType());
         } catch (RuntimeException e) {
