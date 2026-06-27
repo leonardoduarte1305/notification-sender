@@ -15,8 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 public class EmailDTO {
 
-    private String from;
-
     private String subject;
 
     private String message;

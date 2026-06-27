@@ -1,5 +1,6 @@
 package br.dev.notificationsender.events;
 
+import br.dev.notificationsender.exceptions.NonRetryableMessageException;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +27,10 @@ public class KafkaConsumerConfig {
 
         FixedBackOff backOff = new FixedBackOff(1000L, 3L);
 
-        return new DefaultErrorHandler(recoverer, backOff);
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler(recoverer, backOff);
+        errorHandler.addNotRetryableExceptions(NonRetryableMessageException.class);
+
+        return errorHandler;
     }
 
 }

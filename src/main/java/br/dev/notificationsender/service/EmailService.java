@@ -2,6 +2,7 @@ package br.dev.notificationsender.service;
 
 import br.dev.notificationsender.events.contratos.EmailDTO;
 import br.dev.notificationsender.exceptions.EmailSendingFailureExeption;
+import br.dev.notificationsender.service.validations.EmailDTOValidator;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,14 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
+    private final EmailDTOValidator validator;
+
     private final MimeMessageFactory mimeMessageFactory;
 
     @Retryable(retryFor = EmailSendingFailureExeption.class, maxAttempts = 2, backoff = @Backoff(delay = 3000))
     public void enviarEmail(EmailDTO emailDTO) {
+        validator.validate(emailDTO);
+
         try {
             MimeMessage emailPreenchido = mimeMessageFactory.preencher(from, emailDTO, mailSender);
 

@@ -28,26 +28,14 @@ public class MimeMessageFactory {
     }
 
     private void preencherDestinatarios(EmailDTO emailDTO, MimeMessageHelper helper) throws MessagingException {
-        if (emailDTO.getTo() == null || emailDTO.getTo().isEmpty()) {
-            throw new IllegalArgumentException("Lista de destinatários está vazia.");
-        }
-
         helper.setTo(emailDTO.getTo().toArray(new String[0]));
     }
 
     private void preencherAssunto(EmailDTO emailDTO, MimeMessageHelper helper) throws MessagingException {
-        if (emailDTO.getSubject() == null || emailDTO.getSubject().isEmpty()) {
-            throw new IllegalArgumentException("Não há assunto para o e-mail.");
-        }
-
         helper.setSubject(emailDTO.getSubject());
     }
 
     private void preencherConteudo(EmailDTO emailDTO, MimeMessageHelper helper) throws MessagingException {
-        if (emailDTO.getMessage() == null || emailDTO.getMessage().isEmpty()) {
-            throw new IllegalArgumentException("Não há conteúdo no corpo do e-mail.");
-        }
-
         helper.setText(emailDTO.getMessage(), true);
     }
 
