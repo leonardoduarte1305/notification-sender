@@ -7,9 +7,9 @@ import br.dev.notificationsender.events.contratos.factories.templates.FaturaEmit
 import br.dev.notificationsender.exceptions.InvalidEventTypeException;
 import lombok.NoArgsConstructor;
 
+import static br.dev.notificationsender.commons.ErrorMessages.EVENTO_NAO_PODE_SER_NULO;
+import static br.dev.notificationsender.commons.ErrorMessages.TIPO_EVENTO_DESCONHECIDO;
 import static br.dev.notificationsender.events.contratos.enumx.EventType.FATURA_EMITIDA;
-import static br.dev.notificationsender.exceptions.ErrorMessages.EVENTO_NAO_PODE_SER_NULO;
-import static java.lang.String.format;
 import static java.util.Objects.isNull;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -18,14 +18,14 @@ public class GeradorCorpoEmailFactory {
 
     public static DadosEmail criarNotificacaoByEventType(EmailEvent payload) {
         if (isNull(payload)) {
-            throw new InvalidEventTypeException(EVENTO_NAO_PODE_SER_NULO);
+            throw new InvalidEventTypeException(EVENTO_NAO_PODE_SER_NULO.getMessage());
         }
 
         if (FATURA_EMITIDA.equals(payload.getEventType())) {
             return new FaturaEmitidaBody((FaturaEmitidaEvent) payload);
         }
 
-        throw new InvalidEventTypeException(format("Tipo de evento nao conhecido: :%s", payload.getClass().getSimpleName()));
+        throw new InvalidEventTypeException(TIPO_EVENTO_DESCONHECIDO.format(payload.getClass().getSimpleName()));
     }
 
 }

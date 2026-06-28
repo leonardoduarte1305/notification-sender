@@ -10,7 +10,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static br.dev.notificationsender.commons.ErrorMessages.CAMPO_OBRIGATORIO;
+import static br.dev.notificationsender.commons.ErrorMessages.DEVE_SER_EMAIL_VALIDO;
+import static br.dev.notificationsender.commons.ErrorMessages.DEVE_SER_MAIOR_QUE_ZERO;
+import static br.dev.notificationsender.commons.ErrorMessages.DEVE_SER_POSITIVO;
+import static br.dev.notificationsender.commons.ErrorMessages.PAYLOAD_FATURA_EMITIDA_INVALIDO;
+import static br.dev.notificationsender.commons.ErrorMessages.PAYLOAD_NAO_PODE_SER_NULO;
 import static br.dev.notificationsender.events.contratos.enumx.EventType.FATURA_EMITIDA;
+import static java.lang.String.join;
 
 @Component
 public class FaturaEmitidaEventValidator {
@@ -19,7 +26,7 @@ public class FaturaEmitidaEventValidator {
         List<String> errors = new ArrayList<>();
 
         if (payload == null) {
-            throw new InvalidEmailEventPayloadException("Payload do evento de fatura emitida nao pode ser nulo.");
+            throw new InvalidEmailEventPayloadException(PAYLOAD_NAO_PODE_SER_NULO.getMessage());
         }
 
         validateRequiredFields(payload, errors);
@@ -27,55 +34,55 @@ public class FaturaEmitidaEventValidator {
         validateRecipient(payload.destinatario(), errors);
 
         if (!errors.isEmpty()) {
-            throw new InvalidEmailEventPayloadException("Payload do evento de fatura emitida invalido: " + String.join("; ", errors));
+            throw new InvalidEmailEventPayloadException(PAYLOAD_FATURA_EMITIDA_INVALIDO.format(join("; ", errors)));
         }
     }
 
     private static void validateRequiredFields(FaturaEmitidaEvent payload, List<String> errors) {
         if (payload.eventId() == null) {
-            errors.add("eventId é obrigatório");
+            errors.add(CAMPO_OBRIGATORIO.format("eventId"));
         }
 
         if (payload.eventType() == null) {
-            errors.add("eventType é obrigatório");
+            errors.add(CAMPO_OBRIGATORIO.format("eventType"));
         } else if (!FATURA_EMITIDA.equals(payload.eventType())) {
             errors.add("eventType deve ser FATURA_EMITIDA");
         }
 
         if (payload.numeroApartamento() == null) {
-            errors.add("numeroApartamento é obrigatório");
+            errors.add(CAMPO_OBRIGATORIO.format("numeroApartamento"));
         }
 
         if (payload.valorTotal() == null) {
-            errors.add("valorTotal é obrigatório");
+            errors.add(CAMPO_OBRIGATORIO.format("valorTotal"));
         }
 
         if (payload.dataVencimento() == null) {
-            errors.add("dataVencimento é obrigatório");
+            errors.add(CAMPO_OBRIGATORIO.format("dataVencimento"));
         }
 
         if (payload.faturaId() == null) {
-            errors.add("faturaId é obrigatório");
+            errors.add(CAMPO_OBRIGATORIO.format("faturaId"));
         }
     }
 
     private static void validatePositiveNumbers(FaturaEmitidaEvent payload, List<String> errors) {
         if (payload.numeroApartamento() != null && payload.numeroApartamento() <= 0) {
-            errors.add("numeroApartamento deve ser positivo");
+            errors.add(DEVE_SER_POSITIVO.format("numeroApartamento"));
         }
 
         if (payload.valorTotal() != null && payload.valorTotal().compareTo(BigDecimal.ZERO) <= 0) {
-            errors.add("valorTotal deve ser maior que zero");
+            errors.add(DEVE_SER_MAIOR_QUE_ZERO.format("valorTotal"));
         }
 
         if (payload.faturaId() != null && payload.faturaId() <= 0) {
-            errors.add("faturaId deve ser positivo");
+            errors.add(DEVE_SER_POSITIVO.format("faturaId"));
         }
     }
 
     private static void validateRecipient(String destinatario, List<String> errors) {
         if (destinatario == null || destinatario.isBlank()) {
-            errors.add("destinatário é obrigatório");
+            errors.add(CAMPO_OBRIGATORIO.format("destinatário"));
             return;
         }
 
@@ -83,7 +90,7 @@ public class FaturaEmitidaEventValidator {
             InternetAddress internetAddress = new InternetAddress(destinatario);
             internetAddress.validate();
         } catch (AddressException e) {
-            errors.add("destinatário deve ser um e-mail valido");
+            errors.add(DEVE_SER_EMAIL_VALIDO.format("destinatário"));
         }
     }
 

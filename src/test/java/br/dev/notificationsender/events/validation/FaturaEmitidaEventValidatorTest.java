@@ -25,7 +25,7 @@ class FaturaEmitidaEventValidatorTest {
     void deveRejeitarPayloadNulo() {
         assertThatThrownBy(() -> validator.validate(null))
                 .isInstanceOf(InvalidEmailEventPayloadException.class)
-                .hasMessageContaining("nao pode ser nulo");
+                .hasMessageContaining("não pode ser nulo");
     }
 
     @Test

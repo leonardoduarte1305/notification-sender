@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static br.dev.notificationsender.commons.ErrorMessages.CAMPO_NAO_PODE_SER_NULO_OU_VAZIO;
+import static br.dev.notificationsender.commons.ErrorMessages.CAMPO_OBRIGATORIO;
+import static br.dev.notificationsender.commons.ErrorMessages.DEVE_SER_EMAIL_VALIDO;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -32,9 +35,9 @@ class EmailDTOValidatorTest {
 
         assertThatThrownBy(() -> validator.validate(emailDTO))
                 .isInstanceOf(InvalidEmailDTOException.class)
-                .hasMessageContaining("\"subject\" não pode ser nulo ou estar vazio")
-                .hasMessageContaining("\"message\" não pode ser nula ou estar vazia")
-                .hasMessageContaining("\"to\" é obrigatório");
+                .hasMessageContaining(CAMPO_NAO_PODE_SER_NULO_OU_VAZIO.format("subject"))
+                .hasMessageContaining(CAMPO_NAO_PODE_SER_NULO_OU_VAZIO.format("message"))
+                .hasMessageContaining(CAMPO_OBRIGATORIO.format("to"));
     }
 
     @Test
@@ -47,19 +50,20 @@ class EmailDTOValidatorTest {
 
         assertThatThrownBy(() -> validator.validate(emailDTO))
                 .isInstanceOf(InvalidEmailDTOException.class)
-                .hasMessageContaining("\"subject\" não pode ser nulo ou estar vazio")
-                .hasMessageContaining("\"message\" não pode ser nula ou estar vazia")
-                .hasMessageContaining("destinatário não pode ser nulo ou estar vazio");
+                .hasMessageContaining(CAMPO_NAO_PODE_SER_NULO_OU_VAZIO.format("subject"))
+                .hasMessageContaining(CAMPO_NAO_PODE_SER_NULO_OU_VAZIO.format("message"))
+                .hasMessageContaining(CAMPO_NAO_PODE_SER_NULO_OU_VAZIO.format("destinatário"));
     }
 
     @Test
     void deveRejeitarDestinatarioInvalido() {
         EmailDTO emailDTO = validEmailDTO();
-        emailDTO.setTo(List.of("email-invalido"));
+        String emailInvalido = "email-invalido";
+        emailDTO.setTo(List.of(emailInvalido));
 
         assertThatThrownBy(() -> validator.validate(emailDTO))
                 .isInstanceOf(InvalidEmailDTOException.class)
-                .hasMessageContaining("destinatário encontrado com formato invalido: email-invalido");
+                .hasMessageContaining(DEVE_SER_EMAIL_VALIDO.format(emailInvalido));
     }
 
     @Test
@@ -70,7 +74,7 @@ class EmailDTOValidatorTest {
 
         assertThatThrownBy(() -> validator.validate(emailDTO))
                 .isInstanceOf(InvalidEmailDTOException.class)
-                .hasMessageContaining("destinatário não pode ser nulo ou estar vazio");
+                .hasMessageContaining(CAMPO_NAO_PODE_SER_NULO_OU_VAZIO.format("destinatário"));
     }
 
     private static EmailDTO validEmailDTO() {
