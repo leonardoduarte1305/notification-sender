@@ -1,6 +1,5 @@
 package br.dev.notificationsender.events;
 
-import br.dev.notificationsender.events.contratos.enumx.EventStatus;
 import br.dev.notificationsender.events.contratos.enumx.EventType;
 import br.dev.notificationsender.events.entity.ProcessedEmailEvent;
 import br.dev.notificationsender.events.repository.ProcessedEmailEventRepository;
@@ -22,9 +21,10 @@ public class ProcessedEmailEventService {
     private final ProcessedEmailEventRepository repository;
 
     public boolean reservarParaProcessamento(UUID eventId, EventType eventType) {
-        int eventosReservados = repository.reserveNewEvent(eventId, eventType.name(), Instant.now());
+        int eventoReservado = repository.reserveNewEvent(eventId, eventType.name(), Instant.now());
 
-        if (eventosReservados == 1) {
+        if (eventoReservado == 1) {
+            log.info("Evento de e-mail reservado para processamento. eventId={}, eventType={}", eventId, eventType);
             return true;
         }
 
@@ -60,12 +60,14 @@ public class ProcessedEmailEventService {
         ProcessedEmailEvent eventoProcessado = buscarEvento(eventId);
         eventoProcessado.marcarComoFinalizado(eventType);
         repository.save(eventoProcessado);
+        log.info("Evento de e-mail marcado como FINISHED. eventId={}, eventType={}", eventId, eventType);
     }
 
     public void marcarComoFalha(UUID eventId, EventType eventType) {
         ProcessedEmailEvent eventoProcessado = buscarEvento(eventId);
         eventoProcessado.marcarComoFalha(eventType);
         repository.save(eventoProcessado);
+        log.warn("Evento de e-mail marcado como FAILED. eventId={}, eventType={}", eventId, eventType);
     }
 
     private ProcessedEmailEvent buscarEvento(UUID eventId) {

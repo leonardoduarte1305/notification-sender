@@ -35,12 +35,10 @@ public class EmailService {
         try {
             MimeMessage emailPreenchido = mimeMessageFactory.preencher(from, emailDTO, mailSender);
 
-            log.debug("Enviando email de: {}, para: {}, assunto: {}.", from, emailDTO.getTo(), emailDTO.getSubject());
-
             mailSender.send(emailPreenchido);
+            log.info("E-mail enviado com sucesso. Quantidade de destinatários {}", emailDTO.getTo().size());
         } catch (MessagingException | MailException e) {
-            log.error("Erro ao enviar e-mail de: {} para: {}. Assunto: {}.",
-                    from, emailDTO.getTo(), emailDTO.getSubject(), e);
+            log.error("Erro ao enviar e-mail. Quantidade de destinatários {}", emailDTO.getTo().size(), e);
 
             throw new EmailSendingFailureExeption(e.getLocalizedMessage(), e);
         }

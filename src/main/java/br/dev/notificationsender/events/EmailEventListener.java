@@ -4,6 +4,7 @@ import br.dev.notificationsender.events.contratos.EmailDTO;
 import br.dev.notificationsender.events.contratos.FaturaEmitidaEvent;
 import br.dev.notificationsender.events.contratos.factories.templates.DadosEmail;
 import br.dev.notificationsender.events.validation.FaturaEmitidaEventValidator;
+import br.dev.notificationsender.exceptions.NonRetryableMessageException;
 import br.dev.notificationsender.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +38,23 @@ public class EmailEventListener {
                 return;
             }
 
+            log.info("Consumindo evento de e-mail. eventId={}, eventType={}", payload.eventId(), payload.eventType());
+
             DadosEmail dadosEmail = criarNotificacaoByEventType(payload);
             EmailDTO emailDTO = generateEmailDTO(payload, dadosEmail);
             service.enviarEmail(emailDTO);
 
             processedEmailEventService.marcarComoFinalizado(payload.eventId(), payload.eventType());
+        } catch (NonRetryableMessageException e) {
+            if (eventoReservado) {
+                processedEmailEventService.marcarComoFalha(payload.eventId(), payload.eventType());
+            }
+
+            log.warn("Mensagem Kafka invalida. eventId={}, eventType={}, motivo={}",
+                    payload != null ? payload.eventId() : null,
+                    payload != null ? payload.eventType() : null,
+                    e.getMessage());
+            throw e;
         } catch (RuntimeException e) {
             if (eventoReservado) {
                 processedEmailEventService.marcarComoFalha(payload.eventId(), payload.eventType());
