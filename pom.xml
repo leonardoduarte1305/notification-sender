@@ -71,13 +71,7 @@
         <!-- ====================== Libraries Properties ========================= -->
         <!-- ===================================================================== -->
 
-        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
-        <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
-        <swagger-annotations.version>2.2.49</swagger-annotations.version>
-        <spotbugs-annotations.version>4.10.2</spotbugs-annotations.version>
         <spring-retry.version>2.0.12</spring-retry.version>
-        <springdoc-openapi-starter-webmvc-ui.version>2.7.0</springdoc-openapi-starter-webmvc-ui.version>
-
         <mapstruct.version>1.5.5.Final</mapstruct.version>
 
         <!-- ===================================================================== -->
@@ -91,6 +85,8 @@
             ${dockerhub.username}/${project.artifactId}-service:${docker.tag}
         </docker.final.name>
         <paketobuildpacks.builder-jammy-java-tiny.version>0.1.37</paketobuildpacks.builder-jammy-java-tiny.version>
+        <jackson-databind.version>2.22.0</jackson-databind.version>
+        <jackson-datatype-jsr310.version>2.22.0</jackson-datatype-jsr310.version>
 
     </properties>
 
@@ -124,24 +120,20 @@
 
         <!-- Outras dependencias -->
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-datatype-jsr310.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${mapstruct.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>${mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -173,11 +165,6 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.restdocs</groupId>
-            <artifactId>spring-restdocs-mockmvc</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -253,8 +240,8 @@
                                             <email>${dockerhub.email}</email>
                                         </publishRegistry>
                                     </docker>
-                                    <imageBuilder>docker.io/paketobuildpacks/builder-jammy-java-tiny:
-                                        ${paketobuildpacks.builder-jammy-java-tiny.version}
+                                    <imageBuilder>
+                                        docker.io/paketobuildpacks/builder-jammy-java-tiny:${paketobuildpacks.builder-jammy-java-tiny.version}
                                     </imageBuilder>
                                 </configuration>
                             </execution>
