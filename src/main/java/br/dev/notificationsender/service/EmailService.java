@@ -1,7 +1,7 @@
 package br.dev.notificationsender.service;
 
 import br.dev.notificationsender.events.contratos.EmailDTO;
-import br.dev.notificationsender.exceptions.EmailSendingFailureExeption;
+import br.dev.notificationsender.exceptions.EmailSendingFailureException;
 import br.dev.notificationsender.service.validations.EmailDTOValidator;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -28,7 +28,7 @@ public class EmailService {
 
     private final MimeMessageFactory mimeMessageFactory;
 
-    @Retryable(retryFor = EmailSendingFailureExeption.class, maxAttempts = 2, backoff = @Backoff(delay = 3000))
+    @Retryable(retryFor = EmailSendingFailureException.class, maxAttempts = 2, backoff = @Backoff(delay = 3000))
     public void enviarEmail(EmailDTO emailDTO) {
         validator.validate(emailDTO);
 
@@ -40,7 +40,7 @@ public class EmailService {
         } catch (MessagingException | MailException e) {
             log.error("Erro ao enviar e-mail. Quantidade de destinatários {}", emailDTO.getTo().size(), e);
 
-            throw new EmailSendingFailureExeption(e.getLocalizedMessage(), e);
+            throw new EmailSendingFailureException(e.getLocalizedMessage(), e);
         }
     }
 

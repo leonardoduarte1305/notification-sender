@@ -15,7 +15,7 @@ public enum ErrorMessages implements MessageFormatter {
 
     CAMPO_NAO_PODE_SER_NULO_OU_VAZIO_OU_BLANK("%s não pode ser nulo, vazio ou estar em branco"),
 
-    TIPO_EVENTO_DESCONHECIDO("Tipo de evento não conhecido: :%s"),
+    TIPO_EVENTO_DESCONHECIDO("Tipo de evento não conhecido: %s"),
 
     PAYLOAD_NAO_PODE_SER_NULO("Payload do evento de fatura emitida não pode ser nulo."),
 
