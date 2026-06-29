@@ -16,7 +16,6 @@ mvn clean package
 
 ### Empacota, gera imagem de contêiner e envia para o DockerHub a imagem gerada
 
-A utilização do profile "docker-build-push" surte efeito apenas no módulo de serviço
 (Deve-se tomar cuidado neste passo porque uma imagem criada no MacOS (arm64)
 não é compatível para rodar no Linux (amd64))
 
@@ -52,7 +51,7 @@ docker.io/leonardoduarte1305/notification-sender-service:0.0.1-SNAPSHOT
     services:
         notification-sender:
         image: leonardoduarte1305/notification-sender-service:0.0.1-SNAPSHOT
-        container_name: notification-sender-compose
+        container_name: notification-sender
         ports:
           - "8010:8080"
         env_file:
@@ -61,6 +60,7 @@ docker.io/leonardoduarte1305/notification-sender-service:0.0.1-SNAPSHOT
 ## Instruções de deploy
 
 ### As variáveis de ambiente necessárias são as seguintes:
+    SERVER_PORT=8080
 
     SPRING_MAIL_HOST=smtp.gmail.com
     SPRING_MAIL_PORT=587
