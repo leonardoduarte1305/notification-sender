@@ -79,3 +79,7 @@ docker.io/leonardoduarte1305/notification-sender-service:0.0.1-SNAPSHOT
     TOPICO_ENVIO_EMAIL=topico-correto-para-envio-de-email
     TOPICO_ENVIO_EMAIL_DLQ=topico-correto-para-envio-de-email-dlq
     KAFKA_AUTO_CREATE_TOPICS=true
+    KAFKA_AUTO_OFFSET_RESET=latest
+    KAFKA_ACK_MODE=record
+    KAFKA_CONCURRENCY=3
+    KAFKA_ENABLE_AUTO_COMMIT=false

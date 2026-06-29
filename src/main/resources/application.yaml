@@ -18,6 +18,9 @@ spring:
           starttls:
             enable: true
   kafka:
+    #      Este serviço assume semântica at-least-once.
+    #      Mensagens podem ser reprocessadas em caso de falha.
+    #      Duplicidade é tratada por processedEmailEventService usando eventId + eventType.
     admin:
       auto-create: ${KAFKA_AUTO_CREATE_TOPICS}
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
@@ -25,6 +28,12 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: ${GROUP_ID}
+      auto-offset-reset: ${KAFKA_AUTO_OFFSET_RESET:latest}
+      enable-auto-commit: ${KAFKA_ENABLE_AUTO_COMMIT:false}
+    listener:
+      ack-mode: ${KAFKA_ACK_MODE:record}
+      concurrency: ${KAFKA_CONCURRENCY:1}
+
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
     username: ${POSTGRES_USER}
