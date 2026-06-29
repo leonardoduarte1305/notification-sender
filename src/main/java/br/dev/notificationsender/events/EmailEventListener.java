@@ -26,7 +26,7 @@ public class EmailEventListener {
 
     private final FaturaEmitidaEventValidator validator;
 
-    @KafkaListener(topics = "topico-envio-email")
+    @KafkaListener(topics = "${app.kafka.topico-envio-email}")
     public void consumirEmissaoDeFaturas(FaturaEmitidaEvent payload) {
         boolean eventoReservado = false;
 

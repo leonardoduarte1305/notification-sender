@@ -4,6 +4,7 @@ import br.dev.notificationsender.exceptions.NonRetryableMessageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.TopicPartition;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,7 +19,8 @@ public class KafkaConsumerConfig {
 
     private final KafkaTemplate<Object, Object> kafkaTemplate;
 
-    private static final String TOPICO_DLQ = "topico-dlq";
+    @Value("${app.kafka.topico-envio-email-dlq}")
+    private String topicoDlq;
 
     @Bean
     public DefaultErrorHandler errorHandler() {
@@ -29,9 +31,9 @@ public class KafkaConsumerConfig {
                             letter.topic(),
                             letter.partition(),
                             letter.offset(),
-                            TOPICO_DLQ,
+                            topicoDlq,
                             exception.getClass().getSimpleName());
-                    return new TopicPartition(TOPICO_DLQ, letter.partition());
+                    return new TopicPartition(topicoDlq, letter.partition());
                 }
         );
 

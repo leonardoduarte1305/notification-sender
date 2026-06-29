@@ -24,7 +24,7 @@ spring:
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: notification-sender
+      group-id: ${GROUP_ID}
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
     username: ${POSTGRES_USER}
@@ -45,3 +45,6 @@ app:
   mail:
     # NOTIFICATION_MAIL_FROM = Username personalizado que aparece no email enviado
     from: ${NOTIFICATION_MAIL_FROM:${SPRING_MAIL_HOST}}
+  kafka:
+    topico-envio-email: ${TOPICO_ENVIO_EMAIL}
+    topico-envio-email-dlq: ${TOPICO_ENVIO_EMAIL_DLQ}

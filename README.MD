@@ -67,12 +67,14 @@ docker.io/leonardoduarte1305/notification-sender-service:0.0.1-SNAPSHOT
     SPRING_MAIL_USERNAME=username_secreto
     SPRING_MAIL_PASSWORD=senha_super_secreta
     
-    SERVER_PORT=8086
+    KAFKA_BOOTSTRAP_SERVERS=kafka-broker-1:19092,kafka-broker-2:19092,kafka-broker-3:19092
     
-    KAFKA_BOOTSTRAP_SERVERS=localhost:9092
-    
-    POSTGRES_HOST=localhost
+    POSTGRES_HOST=postgres
     POSTGRES_PORT=5432
     POSTGRES_DB=schema_do_banco
     POSTGRES_USER=user_do_banco
     POSTGRES_PASSWORD=senha_do_banco
+    
+    GROUP_ID=notification-sender
+    TOPICO_ENVIO_EMAIL=topico-correto-para-envio-de-email
+    TOPICO_ENVIO_EMAIL_DLQ=topico-correto-para-envio-de-email-dlq
