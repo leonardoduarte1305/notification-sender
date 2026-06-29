@@ -78,3 +78,4 @@ docker.io/leonardoduarte1305/notification-sender-service:0.0.1-SNAPSHOT
     GROUP_ID=notification-sender
     TOPICO_ENVIO_EMAIL=topico-correto-para-envio-de-email
     TOPICO_ENVIO_EMAIL_DLQ=topico-correto-para-envio-de-email-dlq
+    KAFKA_AUTO_CREATE_TOPICS=true

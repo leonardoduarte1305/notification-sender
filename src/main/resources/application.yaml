@@ -19,7 +19,7 @@ spring:
             enable: true
   kafka:
     admin:
-      auto-create: true
+      auto-create: ${KAFKA_AUTO_CREATE_TOPICS}
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
